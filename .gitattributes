@@ -1,0 +1,11 @@
+# Track everything by default
+* filter=lfs diff=lfs merge=lfs -text
+
+# Exclude Git files
+.git* !filter !diff !merge
+
+# Exclude text-based files (adjust as needed)
+*.md !filter !diff !merge
+*.txt !filter !diff !merge
+*.cs !filter !diff !merge
+*.json !filter !diff !merge
