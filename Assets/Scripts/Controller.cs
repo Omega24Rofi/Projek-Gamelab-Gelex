@@ -17,6 +17,7 @@ public class Controller : MonoBehaviour
     public float groundDistance = 0.1f;
     public LayerMask groundMask;
     public float batasKananKiri = 2.7f;
+    public float rotationSpeed = 5f;
 
 
     // private Vector3 velocity;
@@ -53,8 +54,8 @@ public class Controller : MonoBehaviour
         if (isMoving)
         {
             Quaternion targetRotation = Quaternion.LookRotation(move * -1);
-            // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 2f);
-            transform.rotation = targetRotation;
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            // transform.rotation = targetRotation;
         }
 
         if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps))
