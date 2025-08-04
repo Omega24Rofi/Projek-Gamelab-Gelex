@@ -9,7 +9,7 @@ public class Controller : MonoBehaviour
 {
     // public CharacterController controller;
     public float speed = 12f;
-    public float gravity = -20f;
+    public float additionalGravity = -20f;
     public float jumpHeight = 5f;
     public float fallMultiplier = 2.5f;
     public int maxJumps = 2;
@@ -25,7 +25,7 @@ public class Controller : MonoBehaviour
     private int jumpCount = 0;
     private Animator animasi;
     private Rigidbody rb;
-    void Start()
+    void Awake()
     {
         animasi = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
@@ -47,7 +47,11 @@ public class Controller : MonoBehaviour
         float z = Input.GetAxis("Vertical");
         float y = rb.velocity.y;
 
-        Vector3 move = (Vector3.right * x + Vector3.forward * z).normalized;
+        Vector3 move = Vector3.right * x + Vector3.forward * z;
+        if (move.magnitude > 1)
+        {
+            move = move.normalized;
+        }
 
         bool isMoving = move.magnitude > 0.01f;
 
@@ -60,18 +64,18 @@ public class Controller : MonoBehaviour
 
         if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < maxJumps))
         {
-            y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            y = Mathf.Sqrt(jumpHeight * -2f * additionalGravity);
             jumpCount++;
         }
 
         // Mengaplikasikan gravitasi ke karakter
         if (y < 0.01f)
         {
-            y += gravity * fallMultiplier * Time.deltaTime; // Jatuh lebih cepat
+            y += additionalGravity * fallMultiplier * Time.deltaTime; // Jatuh lebih cepat
         }
         else
         {
-            y += gravity * Time.deltaTime; // Jatuh normal
+            y += additionalGravity * Time.deltaTime; // Jatuh normal
         }
 
         rb.velocity = move * speed + Vector3.up * y;
