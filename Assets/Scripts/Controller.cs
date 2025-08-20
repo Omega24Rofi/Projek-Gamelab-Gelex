@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Controller : MonoBehaviour
 {
@@ -88,5 +89,30 @@ public class Controller : MonoBehaviour
         {
             transform.position = new Vector3(Mathf.Sign(transform.position.x) * batasKananKiri, transform.position.y, transform.position.z);
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // Kita cek apakah objek yang kita sentuh memiliki tag "Laser"
+        if (other.CompareTag("Laser"))
+        {
+            // Jika iya, cetak pesan ke konsol untuk memastikan ini bekerja
+            Debug.Log("Player menyentuh laser! GAME OVER!");
+
+            // Panggil fungsi untuk mengakhiri permainan
+            GameOver();
+        }
+    }
+
+    void GameOver()
+    {
+        // Di sini kita akan menulis logika apa yang terjadi saat game over.
+        // Pilihan paling sederhana adalah me-restart level yang sedang berjalan.
+
+        // Mengambil scene yang sedang aktif saat ini
+        Scene currentScene = SceneManager.GetActiveScene();
+
+        // Memuat ulang scene tersebut
+        SceneManager.LoadScene(currentScene.name);
     }
 }
